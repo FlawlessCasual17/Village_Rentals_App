@@ -19,4 +19,25 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".config\dotnet-tools.json" />
+    <Content Include=".idea\.gitignore" />
+    <Content Include=".idea\.idea.Village_Rentals_App.dir\.idea\.gitignore" />
+    <Content Include=".idea\.idea.Village_Rentals_App.dir\.idea\codeStyles\codeStyleConfig.xml" />
+    <Content Include=".idea\.idea.Village_Rentals_App.dir\.idea\encodings.xml" />
+    <Content Include=".idea\.idea.Village_Rentals_App.dir\.idea\GitLink.xml" />
+    <Content Include=".idea\.idea.Village_Rentals_App.dir\.idea\indexLayout.xml" />
+    <Content Include=".idea\.idea.Village_Rentals_App.dir\.idea\inspectionProfiles\Project_Default.xml" />
+    <Content Include=".idea\.idea.Village_Rentals_App.dir\.idea\projectSettingsUpdater.xml" />
+    <Content Include=".idea\.idea.Village_Rentals_App.dir\.idea\vcs.xml" />
+    <Content Include=".idea\.idea.Village_Rentals_App.dir\.idea\workspace.xml" />
+    <Content Include=".idea\encodings.xml" />
+    <Content Include=".idea\GitLink.xml" />
+    <Content Include=".idea\indexLayout.xml" />
+    <Content Include=".idea\inspectionProfiles\Project_Default.xml" />
+    <Content Include=".idea\projectSettingsUpdater.xml" />
+    <Content Include=".idea\vcs.xml" />
+    <Content Include=".idea\workspace.xml" />
+  </ItemGroup>
 </Project>
