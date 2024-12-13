@@ -1,6 +1,4 @@
-﻿using System;
-
-using Avalonia;
+﻿using Avalonia;
 
 namespace Village_Rentals_App;
 
