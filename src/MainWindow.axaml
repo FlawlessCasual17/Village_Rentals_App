@@ -4,6 +4,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Village_Rentals_App.MainWindow"
-        Title="Village_Rentals_App">
-    Welcome to Avalonia!
+        Title="Village_Rentals_App"
+        Width="1522"
+        Height="808"
+        RequestedThemeVariant="Dark"
+        >
+    <Rectangle
+        Stroke="#0F172A"
+        StrokeThickness="2"
+        StrokeDashOffset="1">
+        <Rectangle.Fill>
+            <SolidColorBrush
+                Color="#0F172A" />
+        </Rectangle.Fill>
+    </Rectangle>
 </Window>
