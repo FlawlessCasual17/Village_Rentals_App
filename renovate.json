@@ -1,6 +1,8 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "config:recommended"
-    ]
+    "autoApprove": true,
+    "assignAutomerge": true,
+    "automergeStrategy": "fast-forward",
+    "automergeType": "pr",
+    "automerge": true
 }
