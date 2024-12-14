@@ -1,0 +1,26 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            
+            <StackPanel Spacing="10">
+                <Rectangle Classes="MainBackground" Width="200" Height="100"/>
+                <TextBlock Foreground="White">Sample Text</TextBlock>
+                <Button>Sample Button</Button>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- Add Styles Here -->
+    <Style>
+        <Style.Resources>
+            <Color x:Key="MainBackgroundColor">#020617</Color>
+        </Style.Resources>
+    </Style>
+
+    <Style Selector="Rectangle.MainBackground">
+        <Setter Property="Fill" Value="{DynamicResource MainBackgroundColor}"/>
+        <Setter Property="Stroke" Value="{DynamicResource MainBackgroundColor}"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+    </Style>
+</Styles>
