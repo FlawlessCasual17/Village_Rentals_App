@@ -5,19 +5,19 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Village_Rentals_App.MainWindow"
         Title="Village_Rentals_App"
-        Width="1922"
-        Height="808">
+        Width="1920"
+        Height="1080">
     
     <Grid>
         <!-- Main Background Rectangle -->
-        <Rectangle Width="1922"
-                    Height="808"
+        <Rectangle Width="1920"
+                    Height="1080"
                     Fill="#020617"
                     Stroke="#020617"
                     StrokeThickness="2" />
 
         <!-- Top Header Rectangle -->
-        <Rectangle Width="1924"
+        <Rectangle Width="1920"
                     Height="29.5"
                     Fill="#1E293B"
                     Margin="0,-420,0,0" />
