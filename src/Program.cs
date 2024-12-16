@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Village_Rentals_App.bones;
 
 namespace Village_Rentals_App;
 
@@ -8,9 +9,9 @@ class Program {
     // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args) 
-        => BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        => buildAvaloniaApp().StartWithClassicDesktopLifetime(args);
 
     // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().LogToTrace();
+    public static AppBuilder buildAvaloniaApp()
+        => AppBuilder.Configure<bones.App>().UsePlatformDetect().WithInterFont().LogToTrace();
 }
