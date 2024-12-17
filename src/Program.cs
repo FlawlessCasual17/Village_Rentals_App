@@ -1,5 +1,5 @@
 ﻿using Avalonia;
-using Village_Rentals_App.bones;
+using Village_Rentals_App.frontend;
 
 namespace Village_Rentals_App;
 
@@ -12,6 +12,7 @@ class Program {
         => buildAvaloniaApp().StartWithClassicDesktopLifetime(args);
 
     // Avalonia configuration, don't remove; also used by visual designer.
+    // ReSharper disable once MemberCanBePrivate.Global
     public static AppBuilder buildAvaloniaApp()
-        => AppBuilder.Configure<bones.App>().UsePlatformDetect().WithInterFont().LogToTrace();
+        => AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().LogToTrace();
 }

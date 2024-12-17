@@ -11,3 +11,4 @@ obj/
 /wwwroot/node_modules
 
 .gut
+*.env*
