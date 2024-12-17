@@ -1,4 +1,4 @@
-namespace MainApp.meat;
+namespace MainApp.backend;
 
 public class CategoryList {
     public static int CategoryId => 0;
