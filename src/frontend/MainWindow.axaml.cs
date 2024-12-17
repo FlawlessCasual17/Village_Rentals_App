@@ -1,6 +1,6 @@
 ﻿using Avalonia.Controls;
 
-namespace Village_Rentals_App.bones;
+namespace MainApp.frontend;
 
 public partial class MainWindow : Window {
     public MainWindow() {

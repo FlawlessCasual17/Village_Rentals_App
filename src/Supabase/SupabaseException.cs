@@ -1,4 +1,4 @@
-namespace Village_Rentals_App.Supabase;
+namespace MainApp.Supabase;
 
 public class SupabaseException(string message, int errorCode = 0, string errorDetails = "")
     : Exception(message) {

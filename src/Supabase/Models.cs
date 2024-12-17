@@ -1,6 +1,6 @@
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
-namespace Village_Rentals_App.Supabase;
+namespace MainApp.Supabase;
 
 // Category List
 [Table("category_list")]

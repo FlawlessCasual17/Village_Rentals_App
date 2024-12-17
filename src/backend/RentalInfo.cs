@@ -1,7 +1,7 @@
 using System.Linq;
+using MainApp.Supabase;
 using Supabase.Postgrest.Responses;
-using Village_Rentals_App.Supabase;
-namespace Village_Rentals_App.backend;
+namespace MainApp.backend;
 
 using RentalInfoModel = Supabase.RentalInfo;
 using Response = ModeledResponse<Supabase.RentalInfo>;

@@ -1,7 +1,7 @@
 ﻿using Avalonia;
-using Village_Rentals_App.frontend;
+using MainApp.frontend;
 
-namespace Village_Rentals_App;
+namespace MainApp;
 
 class Program {
     // Initialization code. Don't use any Avalonia, third-party APIs or any
