@@ -1,68 +1,63 @@
-using System.Linq;
 using MainApp.Supabase;
 using Supabase.Postgrest.Responses;
 namespace MainApp.backend;
 
-using RentalInfoModel = Supabase.RentalInfo;
-using Response = ModeledResponse<Supabase.RentalInfo>;
+using Response = ModeledResponse<RentalInfoModel>;
 
+// ReSharper disable once UnusedType.Global
 public class RentalInfo {
     // private fields
-    readonly static SupabaseService SERVICE = new SupabaseService();
+    static readonly SupabaseService SERVICE = new SupabaseService();
     readonly DateTime date = DateTime.Now;
     decimal DailyRate { get; set; }
     decimal TotalCost { get; set; }
-    // ReSharper disable all
-    int EquipmentID { get; set; }
-    int CustomerID { get; set; }
+    // ReSharper disable InconsistentNaming
     // public fields
-    public int RentalID { get; set; }
+    public int? RentalID { get; set; }
+    public int EquipmentID { get; set; }
+    public int CustomerID { get; set; }
     public DateTime ReturnDate { get; set; }
     public DateTime RentalDate { get; set; }
-    // ReSharper restore all
+    public decimal Cost { get; set; }
+    // ReSharper restore InconsistentNaming
 
     // ReSharper disable once MemberCanBePrivate.Global
-    #pragma warning disable CA1822
-    public async Task<Response> fetch() {
-        #pragma warning restore CA1822
+    public static async Task<Response> fetch() {
         try {
-            var service = new SupabaseService();
-            service.intializeService();
-    
-            var client = service.Client;
+            await SERVICE.intializeService();
+            var client = SERVICE.Client;
     
             var result = await client!.From<RentalInfoModel>().Get();
             return result;
         } catch (Exception ex) {
-            Console.WriteLine("Error: The data fetch failed!");
-            throw new Exception(ex.Message);
+            Console.WriteLine("Error: The Rental Info data fetch failed!");
+            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
         }
     }
 
-    async static Task<decimal> getDailyRate(int equipmentId) {
+    static async Task<decimal> getDailyRate(int equipmentId) {
         const string msg = "Error: The data fetching returned a null value!";
-        var data = new RentalEquipment();
 
-        var result = await data.fetch();
+        var result = await RentalEquipment.fetch();
         if (result == null) throw new Exception(msg);
         var models = result.Models;
 
         // First is the equivalent of Where.First() in LINQ.
         // Search through the models and retrieve the value of "daily_rate".
-        var linqResult = models.First(e => e.EquipmentId == equipmentId);
+        var linqResult = models.First(e => e.EquipmentID == equipmentId);
         var newDailyRate = linqResult.DailyRate;
 
         return newDailyRate; // Return the new daily rate.
     }
 
     // ReSharper disable once InconsistentNaming
-    public void calcCost(int equipmentID) {
+    public decimal calcCost(int equipmentID) {
         const string msg = "The Return date cannot be earlier than the Rental date";
         var rentalDays = (int)(RentalDate - ReturnDate).TotalDays;
         if (rentalDays > 0) throw new ArgumentException(msg);
 
-        var task = Task.Run(() => getDailyRate(equipmentID));
-        var newDailyRate = task.GetAwaiter().GetResult();
+        var result = Task.Run(() => getDailyRate(equipmentID)).GetAwaiter();
+        var newDailyRate = result.GetResult();
         DailyRate = newDailyRate;
 
         var baseCost = rentalDays * DailyRate;
@@ -77,39 +72,39 @@ public class RentalInfo {
                 break;
         }
 
-        TotalCost = Math.Round(baseCost, 2);
+        var totalCost = Math.Round(baseCost, 2);
+        TotalCost = totalCost;
+        return totalCost;
     }
 
-    // TODO: Implement this method here so it checks
-    //      the records for an entry containing a specified
-    //      rental id.
     // ReSharper disable once InconsistentNaming
-    public bool processReturn(int rentalID) {
+    public static bool processReturn(int rentalID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
 
             var proof = models.Any(r => r.RentalID == rentalID);
+            
+            if (!proof) return false;
 
-            Console.WriteLine("Found a record associated with the specified rental id.");
+            Console.WriteLine("Found an existing record associated with the specified rental id.");
             
             return proof;
         } catch (Exception ex) {
-            // Log the exception
-            var msg = $"Couldn't find a record associated " +
-                        $"with the specified rental id.\n{ex.Message}";
-            Console.WriteLine(msg);
-            return false;
+            Console.WriteLine(
+                "Couldn't find a record associated with the specified rental ID.");
+            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
         }
     }
 
     // ReSharper disable InconsistentNaming
     public async Task<Response> createRental(int equipmentID, int customerID) {
         try {
-            SERVICE.intializeService();
+            await SERVICE.intializeService();
             var client = SERVICE.Client;
 
             var recordModel = new RentalInfoModel {
+                RentalID = null!,
                 Date = date,
                 CustomerID = customerID,
                 EquipmentID = equipmentID,
@@ -123,39 +118,47 @@ public class RentalInfo {
             
             // ReSharper disable once InvertIf
             if (models.Count != 0) {
-                var first = models.First(r => r.Date == date);
+                var first = models.First(r => 
+                    r.CustomerID == customerID &&
+                    r.EquipmentID == equipmentID);
                 RentalID = first.RentalID;
-                EquipmentID = first.EquipmentID;
                 CustomerID = first.CustomerID;
+                EquipmentID = first.EquipmentID;
+                RentalDate = first.RentalDate;
+                ReturnDate = first.ReturnDate;
+                Cost = first.Cost;
             }
             
             return result;
         } catch (Exception ex) {
-            const string msg = "Error: The creation of a new record failed!";
-            Console.WriteLine(msg);
-            throw new Exception(ex.Message);
+            Console.WriteLine("Error: The creation of a new rental record has failed!");
+            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
         }
     }
-    
-    // TODO: Redo this method using equipmentID, and customerID
-    //  as the new parameters.
-    public bool processRental(int equipmentID, int customerID) {
+
+    public static bool processRental(int equipmentID, int customerID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
 
             var proof = models.Any(r => 
-                r.EquipmentID == equipmentID && r.CustomerID == customerID);
+                r.EquipmentID == equipmentID && 
+                r.CustomerID == customerID);
+            
+            if (!proof) return false;
 
-            Console.WriteLine("Found a record associated with the specified rental id.");
+            Console.WriteLine("""
+                Found an existing record associated with 
+                the specified equipment ID, and customer ID.
+            """);
             
             return proof;
         } catch (Exception ex) {
-            // Log the exception
-            var msg = $"Couldn't find a record associated " +
-                        $"with the specified rental id.\n{ex.Message}";
-            Console.WriteLine(msg);
-            return false;
+            Console.WriteLine("""
+                Couldn't find a record associated with 
+                the specified equipment ID, and customer ID.
+            """);
+            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
         }
     }
 }
