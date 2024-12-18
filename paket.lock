@@ -1,4 +1,7 @@
 STORAGE: NONE
+
+GROUP src
+STORAGE: NONE
 NUGET
   remote: https://api.nuget.org/v3/index.json
     Avalonia (11.2.1)
@@ -18,31 +21,31 @@ NUGET
       Avalonia.X11 (>= 11.2.1) - restriction: >= netstandard2.0
     Avalonia.Fonts.Inter (11.2.1)
       Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
-    Avalonia.FreeDesktop (11.2.1) - restriction: >= netstandard2.0
-      Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
+    Avalonia.FreeDesktop (11.2.2) - restriction: >= netstandard2.0
+      Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
       Tmds.DBus.Protocol (>= 0.20) - restriction: >= netstandard2.0
-    Avalonia.Native (11.2.1) - restriction: >= netstandard2.0
-      Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
+    Avalonia.Native (11.2.2) - restriction: >= netstandard2.0
+      Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
     Avalonia.Remote.Protocol (11.2.2) - restriction: >= netstandard2.0
-    Avalonia.Skia (11.2.1) - restriction: >= netstandard2.0
-      Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
-      HarfBuzzSharp (>= 7.3.0.2) - restriction: >= netstandard2.0
-      HarfBuzzSharp.NativeAssets.Linux (>= 7.3.0.2) - restriction: >= netstandard2.0
-      HarfBuzzSharp.NativeAssets.WebAssembly (>= 7.3.0.3-preview.2.2) - restriction: >= netstandard2.0
-      SkiaSharp (>= 2.88.8) - restriction: >= netstandard2.0
-      SkiaSharp.NativeAssets.Linux (>= 2.88.8) - restriction: >= netstandard2.0
-      SkiaSharp.NativeAssets.WebAssembly (>= 2.88.8) - restriction: >= netstandard2.0
+    Avalonia.Skia (11.2.2) - restriction: >= netstandard2.0
+      Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
+      HarfBuzzSharp (>= 7.3.0.3) - restriction: >= netstandard2.0
+      HarfBuzzSharp.NativeAssets.Linux (>= 7.3.0.3) - restriction: >= netstandard2.0
+      HarfBuzzSharp.NativeAssets.WebAssembly (>= 7.3.0.3) - restriction: >= netstandard2.0
+      SkiaSharp (>= 2.88.9) - restriction: >= netstandard2.0
+      SkiaSharp.NativeAssets.Linux (>= 2.88.9) - restriction: >= netstandard2.0
+      SkiaSharp.NativeAssets.WebAssembly (>= 2.88.9) - restriction: >= netstandard2.0
     Avalonia.Themes.Fluent (11.2.1)
       Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
-    Avalonia.Win32 (11.2.1) - restriction: >= netstandard2.0
-      Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
+    Avalonia.Win32 (11.2.2) - restriction: >= netstandard2.0
+      Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
       Avalonia.Angle.Windows.Natives (>= 2.1.22045.20230930) - restriction: >= netstandard2.0
       System.Numerics.Vectors (>= 4.5) - restriction: && (< net6.0) (>= netstandard2.0)
       System.Runtime.CompilerServices.Unsafe (>= 6.0) - restriction: && (< net6.0) (>= netstandard2.0)
-    Avalonia.X11 (11.2.1) - restriction: >= netstandard2.0
-      Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
-      Avalonia.FreeDesktop (>= 11.2.1) - restriction: >= netstandard2.0
-      Avalonia.Skia (>= 11.2.1) - restriction: >= netstandard2.0
+    Avalonia.X11 (11.2.2) - restriction: >= netstandard2.0
+      Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
+      Avalonia.FreeDesktop (>= 11.2.2) - restriction: >= netstandard2.0
+      Avalonia.Skia (>= 11.2.2) - restriction: >= netstandard2.0
     dotenv.net (3.2.1)
       System.Memory (>= 4.5.5) - restriction: || (&& (>= netstandard1.6) (< netstandard2.0)) (&& (>= netstandard2.0) (< netstandard2.1))
       System.ValueTuple (>= 4.5) - restriction: && (>= netstandard1.6) (< netstandard2.0)
@@ -59,7 +62,7 @@ NUGET
     HarfBuzzSharp.NativeAssets.Linux (8.3.0.1) - restriction: >= netstandard2.0
     HarfBuzzSharp.NativeAssets.macOS (8.3.0.1) - restriction: || (&& (>= net462) (>= netstandard2.0)) (&& (>= net6.0) (< net8.0)) (&& (< net6.0) (>= netstandard2.1)) (&& (>= net8.0) (< net8.0-android) (< net8.0-ios) (< net8.0-tvos) (< net8.0-windows10.0.19041.0)) (>= net8.0-macos) (&& (>= netstandard2.0) (< netstandard2.1))
     HarfBuzzSharp.NativeAssets.tvOS (8.3.0.1) - restriction: >= net8.0-tvos
-    HarfBuzzSharp.NativeAssets.WebAssembly (8.3.1-preview.2.3) - restriction: >= netstandard2.0
+    HarfBuzzSharp.NativeAssets.WebAssembly (8.3.0.1) - restriction: >= netstandard2.0
     HarfBuzzSharp.NativeAssets.Win32 (8.3.0.1) - restriction: || (&& (>= net462) (>= netstandard2.0)) (&& (>= net6.0) (< net8.0)) (&& (< net6.0) (>= netstandard2.1)) (&& (>= net8.0) (< net8.0-android) (< net8.0-ios) (< net8.0-macos) (< net8.0-tvos)) (>= net8.0-windows10.0.19041.0) (&& (>= netstandard2.0) (< netstandard2.1))
     MicroCom.Runtime (0.11) - restriction: >= netstandard2.0
     Microsoft.Bcl.AsyncInterfaces (9.0) - restriction: || (&& (>= net462) (>= net6.0)) (&& (>= net462) (>= netstandard2.1)) (&& (>= net6.0) (< net8.0)) (&& (< net6.0) (>= netstandard2.0)) (&& (< net6.0) (>= netstandard2.1)) (&& (>= netstandard2.0) (< netstandard2.1))
