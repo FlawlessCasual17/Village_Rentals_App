@@ -3,7 +3,7 @@ using Supabase;
 using Env = dotenv.net.Utilities.EnvReader;
 using SupabaseClient = Supabase.Client;
 
-namespace MainApp.Supabase;
+namespace src.Supabase;
 
 public class SupabaseService {
     public SupabaseClient? Client { get; private set; }

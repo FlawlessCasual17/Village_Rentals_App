@@ -1,6 +1,6 @@
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
-namespace MainApp.Supabase;
+namespace src.Supabase;
 
 // ReSharper disable ExplicitCallerInfoArgument
 // ReSharper disable InconsistentNaming

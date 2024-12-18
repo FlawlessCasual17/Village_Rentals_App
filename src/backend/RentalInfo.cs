@@ -1,8 +1,8 @@
-using MainApp.Supabase;
+using src.Supabase;
 using Supabase.Postgrest.Responses;
-namespace MainApp.backend;
+namespace src.backend;
 
-using Response = ModeledResponse<RentalInfoModel>;
+using Response = ModeledResponse<Supabase.RentalInfo>;
 
 // ReSharper disable once UnusedType.Global
 public class RentalInfo {
@@ -27,7 +27,7 @@ public class RentalInfo {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
     
-            var result = await client!.From<RentalInfoModel>().Get();
+            var result = await client!.From<Supabase.RentalInfo>().Get();
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: The Rental Info data fetch failed!");
@@ -98,7 +98,7 @@ public class RentalInfo {
     }
 
     // ReSharper disable InconsistentNaming
-    public static RentalInfoModel getRentalInfo(int rentalID) {
+    public static Supabase.RentalInfo getRentalInfo(int rentalID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -120,7 +120,7 @@ public class RentalInfo {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
 
-            var recordModel = new RentalInfoModel {
+            var recordModel = new Supabase.RentalInfo {
                 RentalID = null!,
                 Date = date,
                 CustomerID = customerID,
@@ -130,7 +130,7 @@ public class RentalInfo {
                 Cost = TotalCost
             };
 
-            var result = await client!.From<RentalInfoModel>().Insert(recordModel);
+            var result = await client!.From<Supabase.RentalInfo>().Insert(recordModel);
             var models = result.Models;
             
             // ReSharper disable once InvertIf
@@ -158,7 +158,7 @@ public class RentalInfo {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
 
-            var recordModel = new RentalInfoModel {
+            var recordModel = new Supabase.RentalInfo {
                 RentalID = rentalID,
                 CustomerID = customerID,
                 EquipmentID = equipmentID,
@@ -167,7 +167,7 @@ public class RentalInfo {
                 Cost = TotalCost
             };
 
-            var result = await client!.From<RentalInfoModel>()
+            var result = await client!.From<Supabase.RentalInfo>()
                 .Where(r => r.RentalID == rentalID)
                 .Update(recordModel);
             var models = result.Models;
@@ -191,7 +191,7 @@ public class RentalInfo {
         }
     }
 
-    public static List<RentalInfoModel> viewAllRentalInfo() {
+    public static List<Supabase.RentalInfo> viewAllRentalInfo() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
