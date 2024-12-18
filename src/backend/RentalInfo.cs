@@ -87,17 +87,34 @@ public class RentalInfo {
             
             if (!proof) return false;
 
-            Console.WriteLine("Found an existing record associated with the specified rental id.");
+            Console.WriteLine("Found a rental info record with the associated rental id.");
             
             return proof;
         } catch (Exception ex) {
             Console.WriteLine(
-                "Couldn't find a record associated with the specified rental ID.");
+                "Couldn't find a rental info record with the associated rental id.");
             throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
         }
     }
 
     // ReSharper disable InconsistentNaming
+    public static RentalInfoModel getRentalInfo(int rentalID) {
+        try {
+            var result = Task.Run(fetch).GetAwaiter().GetResult();
+            var models = result.Models;
+
+            var first = models.First(r => r.RentalID == rentalID);
+
+            Console.WriteLine("Found a rental info record with the associated rental id.");
+
+            return first;
+        } catch (Exception ex) {
+            Console.WriteLine(
+                $"Couldn't find a rental info record with the associated rental id");
+            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+        }
+    }
+
     public async Task<Response> createRental(int equipmentID, int customerID) {
         try {
             await SERVICE.intializeService();
@@ -122,16 +139,65 @@ public class RentalInfo {
                     r.CustomerID == customerID &&
                     r.EquipmentID == equipmentID);
                 RentalID = first.RentalID;
-                CustomerID = first.CustomerID;
-                EquipmentID = first.EquipmentID;
                 RentalDate = first.RentalDate;
                 ReturnDate = first.ReturnDate;
                 Cost = first.Cost;
+                CustomerID = first.CustomerID;
+                EquipmentID = first.EquipmentID;
             }
             
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: The creation of a new rental record has failed!");
+            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+        }
+    }
+
+    public async Task<Response> updateRental(int rentalID, int equipmentID, int customerID) {
+        try {
+            await SERVICE.intializeService();
+            var client = SERVICE.Client;
+
+            var recordModel = new RentalInfoModel {
+                RentalID = rentalID,
+                CustomerID = customerID,
+                EquipmentID = equipmentID,
+                RentalDate = RentalDate,
+                ReturnDate = ReturnDate,
+                Cost = TotalCost
+            };
+
+            var result = await client!.From<RentalInfoModel>()
+                .Where(r => r.RentalID == rentalID)
+                .Update(recordModel);
+            var models = result.Models;
+
+            // ReSharper disable once InvertIf
+            if (models.Count != 0) {
+                var first = models.First(r => r.RentalID == rentalID);
+                RentalID = first.RentalID;
+                RentalDate = first.RentalDate;
+                ReturnDate = first.ReturnDate;
+                Cost = first.Cost;
+                CustomerID = first.CustomerID;
+                EquipmentID = first.EquipmentID;
+            }
+            
+            return result;
+        } catch (Exception ex) {
+            Console.WriteLine(
+                "Error: Failed to update the rental record with the associated rental ID.");
+            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+        }
+    }
+
+    public static List<RentalInfoModel> viewAllRentalInfo() {
+        try {
+            var result = Task.Run(fetch).GetAwaiter().GetResult();
+            var models = result.Models;
+            return models;
+        } catch (Exception ex) {
+            Console.WriteLine("Error: Failed to fetch the rental information!");
             throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
         }
     }

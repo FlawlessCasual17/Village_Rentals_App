@@ -44,12 +44,12 @@ public class CustomerInfo {
             var first = models.First(c => c.CustomerID == customerID);
 
             Console.WriteLine(
-                "Found an existing record associated with the specified customer id.");
+                "Found a customer record associated with the associated customer id.");
             
             return first;
         } catch (Exception ex) {
             Console.WriteLine(
-                $"Couldn't find a record associated with the specified customer id");
+                $"Couldn't find a customer record with the associated customer id");
             throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
         }
     }

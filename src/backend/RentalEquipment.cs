@@ -38,7 +38,7 @@ public class RentalEquipment {
 
             var first = models.First(r => r.EquipmentID == equipmentID);
 
-            Console.WriteLine("Found a record associated with the specified equipment id.");
+            Console.WriteLine("Found an equipment record with the associated equipment id.");
 
             // ReSharper disable once InvertIf
             if (models.Count != 0) {
@@ -51,7 +51,8 @@ public class RentalEquipment {
             
             return first;
         } catch (Exception ex) {
-            Console.WriteLine("Couldn't find a record associated with the specified equipment id.");
+            Console.WriteLine(
+                "Couldn't find an equipment record with the associated equipment id.");
             throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
         }
     }
