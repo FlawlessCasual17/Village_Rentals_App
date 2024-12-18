@@ -65,7 +65,6 @@ public class CustomerInfo {
         }
     }
 
-    // TODO: Add createCustomer() method
     public async Task<Response> createCustomer() {
         try {
             await SERVICE.intializeService();
@@ -100,7 +99,6 @@ public class CustomerInfo {
         }
     }
     
-    // TODO: Add updateCustomer() method
     // ReSharper disable once InconsistentNaming
     public async Task<Response> updateCustomerInfo(int? customerID = null) {
         try {
