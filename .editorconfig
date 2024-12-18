@@ -77,7 +77,7 @@ csharp_style_expression_bodied_constructors = false:silent
 csharp_style_expression_bodied_indexers = true:silent
 csharp_style_expression_bodied_lambdas = true:suggestion
 csharp_style_expression_bodied_local_functions = false:silent
-csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_methods = false:none
 csharp_style_expression_bodied_operators = false:silent
 csharp_style_expression_bodied_properties = true:silent
 
@@ -336,7 +336,7 @@ dotnet_naming_symbols.local_functions.required_modifiers =
 dotnet_naming_style.pascalcase.required_prefix =
 dotnet_naming_style.pascalcase.required_suffix =
 dotnet_naming_style.pascalcase.word_separator =
-dotnet_naming_style.pascalcase.capitalization = pascal_case
+dotnet_naming_style.pascalcase.capitalization = camel_case
 
 dotnet_naming_style.ipascalcase.required_prefix = I
 dotnet_naming_style.ipascalcase.required_suffix =
@@ -363,3 +363,9 @@ dotnet_naming_style.s_camelcase.required_suffix =
 dotnet_naming_style.s_camelcase.word_separator =
 dotnet_naming_style.s_camelcase.capitalization = camel_case
 
+
+# IDE1006: Naming Styles
+dotnet_diagnostic.IDE1006.severity = false
+
+# IDE0022: Use block body for method
+dotnet_diagnostic.IDE0022.severity = false
