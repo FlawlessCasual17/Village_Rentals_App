@@ -2,7 +2,7 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
-namespace MainApp.frontend;
+namespace MainApp;
 
 public partial class App : Application {
     public override void Initialize() =>

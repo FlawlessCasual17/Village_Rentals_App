@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using MainApp.frontend;
 
 namespace MainApp;
 
@@ -12,7 +11,6 @@ class Program {
         => buildAvaloniaApp().StartWithClassicDesktopLifetime(args);
 
     // Avalonia configuration, don't remove; also used by visual designer.
-    // ReSharper disable once MemberCanBePrivate.Global
     public static AppBuilder buildAvaloniaApp()
         => AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().LogToTrace();
 }

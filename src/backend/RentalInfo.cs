@@ -1,6 +1,6 @@
 using MainApp.Supabase;
 using Supabase.Postgrest.Responses;
-namespace backend;
+namespace MainApp.backend;
 
 using Response = ModeledResponse<RentalInfoModel>;
 
