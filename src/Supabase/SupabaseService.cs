@@ -1,15 +1,14 @@
 using dotenv.net;
 using Supabase;
-using SupabaseClient = Supabase.Client;
 using Env = dotenv.net.Utilities.EnvReader;
+using SupabaseClient = Supabase.Client;
 
 namespace MainApp.Supabase;
 
 public class SupabaseService {
     public SupabaseClient? Client { get; private set; }
 
-    // ReSharper disable twice AsyncVoidMethod
-    public async void intializeService() {
+    public async Task intializeService() {
         try {
             DotEnv.Load();
 
@@ -25,8 +24,8 @@ public class SupabaseService {
             await client.InitializeAsync();
 
             Client = client;
-        } catch (SupabaseException ex) {
-            throw new SupabaseDatabaseException(
+        } catch (Exception ex) {
+            throw new SupabaseException(
                 "ERROR: Client initialization has failed!",
                 ex.HResult,
                 $"""
@@ -36,8 +35,7 @@ public class SupabaseService {
                 Exception Instance: {ex.InnerException}
                 Data: {ex.Data}
                 Stacktrace: {ex.StackTrace}
-                """
-            );
+                """);
         }
     }
 }

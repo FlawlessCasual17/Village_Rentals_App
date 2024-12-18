@@ -2,12 +2,13 @@ using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 namespace MainApp.Supabase;
 
+// ReSharper disable ExplicitCallerInfoArgument
+// ReSharper disable InconsistentNaming
 // Category List
 [Table("category_list")]
 public class CategoryList : BaseModel {
-    // ReSharper disable ExplicitCallerInfoArgument
     [PrimaryKey("category_id")]
-    public int CategoryId { get; init; }
+    public int CategoryID { get; init; }
     [Column("name")]
     public string Name { get; set; }
 }
@@ -15,15 +16,14 @@ public class CategoryList : BaseModel {
 // Customer Information
 [Table("customer_information")]
 public class CustomerInfo : BaseModel {
-    // ReSharper disable ExplicitCallerInfoArgument
     [PrimaryKey("customer_id")]
-    public int CustomerId { get; init; }
+    public int? CustomerID { get; init; }
     [Column("last_name")]
     public string LastName { get; set; }
     [Column("first_name")]
     public string FirstName { get; set; }
     [Column("contact_phone")]
-    public string? ContactPhone { get; set; }
+    public string ContactPhone { get; set; }
     [Column("email")]
     public string Email { get; set; }
 }
@@ -31,27 +31,24 @@ public class CustomerInfo : BaseModel {
 // Rental Equipment
 [Table("rental_equipment")]
 public class RentalEquipment : BaseModel {
-    // ReSharper disable ExplicitCallerInfoArgument
     [PrimaryKey("equipment_id")]
-    public int EquipmentId { get; init; }
+    public int EquipmentID { get; init; }
     [Column("category_id")]
-    public int CategoryId { get; set; }
+    public int CategoryID { get; set; }
     [Column("daily_rate")]
     public decimal DailyRate { get; set; }
     [Column("description")]
     public string? Description { get; set; }
     [Column("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
     // Navigation property
     public CategoryList Category { get; set; }
 }
 
 // Rental Information
 public class RentalInfo : BaseModel {
-    // ReSharper disable InconsistentNaming
-    // ReSharper disable ExplicitCallerInfoArgument
     [PrimaryKey("rental_id")]
-    public int RentalID { get; init; }
+    public int? RentalID { get; init; }
     [Column("date")]
     public DateTime Date { get; set; }
     [Column("customer_id")]
@@ -61,7 +58,7 @@ public class RentalInfo : BaseModel {
     [Column("rental_date")]
     public DateTime RentalDate { get; set; }
     [Column("return_date")]
-    public DateTime? ReturnDate { get; set; }
+    public DateTime ReturnDate { get; set; }
     [Column("cost")]
     public decimal Cost { get; set; }
     // Navigation properties
