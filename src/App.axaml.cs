@@ -1,17 +1,16 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+namespace src;
 
-namespace MainApp;
+using AppLifetimeControl = IClassicDesktopStyleApplicationLifetime; 
 
 public partial class App : Application {
-    public override void Initialize() =>
-        AvaloniaXamlLoader.Load(this);
+    public override void Initialize() => AvaloniaXamlLoader.Load(this);
 
-
-    [SuppressMessage("ReSharper", "EnforceIfStatementBraces")]
     public override void OnFrameworkInitializationCompleted() {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) 
+        var appLifetime = ApplicationLifetime;
+        if (appLifetime is AppLifetimeControl desktop) 
             desktop.MainWindow = new MainWindow();
 
         base.OnFrameworkInitializationCompleted();

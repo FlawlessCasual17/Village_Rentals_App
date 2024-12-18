@@ -2,7 +2,7 @@ using src.Supabase;
 using Supabase.Postgrest.Responses;
 namespace src.backend;
 
-using Response = ModeledResponse<Supabase.CustomerInfo>;
+using Response = ModeledResponse<CustomerInfoModel>;
 
 // ReSharper disable once UnusedType.Global
 public class CustomerInfo {
@@ -23,7 +23,7 @@ public class CustomerInfo {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
 
-            var result = await client!.From<Supabase.CustomerInfo>().Get();
+            var result = await client!.From<CustomerInfoModel>().Get();
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: The Customer Info data fetch failed!");
@@ -37,7 +37,7 @@ public class CustomerInfo {
             .Models.Any(c => c.CustomerID == customerID);
 
     // ReSharper disable once InconsistentNaming
-    public static Supabase.CustomerInfo validateCustomer(int customerID) {
+    public static CustomerInfoModel validateCustomer(int customerID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -55,7 +55,7 @@ public class CustomerInfo {
         }
     }
 
-    public static List<Supabase.CustomerInfo> viewCustomers() {
+    public static List<CustomerInfoModel> viewCustomers() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -79,7 +79,7 @@ public class CustomerInfo {
                 Email = Email
             };
 
-            var result = await client!.From<Supabase.CustomerInfo>().Insert(recordModel);
+            var result = await client!.From<CustomerInfoModel>().Insert(recordModel);
             var models = result.Models;
             var proof = verifyCustomer((int)CustomerID!);
             
@@ -106,7 +106,7 @@ public class CustomerInfo {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
 
-            var recordModel = new Supabase.CustomerInfo {
+            var recordModel = new CustomerInfoModel {
                 CustomerID = customerID ?? CustomerID,
                 LastName = LastName,
                 FirstName = FirstName,
@@ -114,7 +114,7 @@ public class CustomerInfo {
                 Email = Email
             };
 
-            var result = await client!.From<Supabase.CustomerInfo>()
+            var result = await client!.From<CustomerInfoModel>()
                 .Where(c => c.CustomerID == CustomerID)
                 .Update(recordModel);
             var models = result.Models;
@@ -144,7 +144,7 @@ public class CustomerInfo {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
 
-            await client!.From<Supabase.CustomerInfo>()
+            await client!.From<CustomerInfoModel>()
                 .Where(c => c.CustomerID == customerID)
                 .Delete();
 

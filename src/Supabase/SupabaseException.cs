@@ -3,8 +3,8 @@ namespace src.Supabase;
 public class SupabaseException(
     string message, 
     int errorCode = 0, 
-    string errorDetails = "")
-    : Exception(message) {
+    string errorDetails = ""
+) : Exception(message) {
     public int ErrorCode { get; init; } = errorCode;
     public string ErrorDetails { get; init; } = errorDetails;
 }

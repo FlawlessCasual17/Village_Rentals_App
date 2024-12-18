@@ -1,6 +1,6 @@
 using dotenv.net;
 using Supabase;
-using Env = dotenv.net.Utilities.EnvReader;
+using static dotenv.net.Utilities.EnvReader;
 using SupabaseClient = Supabase.Client;
 
 namespace src.Supabase;
@@ -17,8 +17,8 @@ public class SupabaseService {
                 AutoConnectRealtime = true
             };
 
-            var url = Env.GetStringValue("SUPABASE_URL");
-            var key = Env.GetStringValue("SUPABASE_ANON_KEY");
+            var url = GetStringValue("SUPABASE_URL");
+            var key = GetStringValue("SUPABASE_ANON_KEY");
 
             var client = new SupabaseClient(url, key, options);
             await client.InitializeAsync();

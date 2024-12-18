@@ -2,7 +2,7 @@ using src.Supabase;
 using Supabase.Postgrest.Responses;
 namespace src.backend;
 
-using Response = ModeledResponse<Supabase.RentalEquipment>;
+using Response = ModeledResponse<RentalEquipmentModel>;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class RentalEquipment {
@@ -22,7 +22,7 @@ public class RentalEquipment {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
 
-            var result = await client!.From<Supabase.RentalEquipment>().Get();
+            var result = await client!.From<RentalEquipmentModel>().Get();
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: The Rental Equipment data fetch failed!");
@@ -31,7 +31,7 @@ public class RentalEquipment {
     }
 
     // ReSharper disable once InconsistentNaming
-    public Supabase.RentalEquipment getEquipment(int equipmentID) {
+    public RentalEquipmentModel getEquipment(int equipmentID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -91,7 +91,7 @@ public class RentalEquipment {
     //     }
     // }
 
-    public static List<Supabase.RentalEquipment> viewEquipmentInventory() {
+    public static List<RentalEquipmentModel> viewEquipmentInventory() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;

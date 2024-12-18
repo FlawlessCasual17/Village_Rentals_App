@@ -2,7 +2,7 @@ using src.Supabase;
 using Supabase.Postgrest.Responses;
 namespace src.backend;
 
-using Response = ModeledResponse<Supabase.CategoryList>;
+using Response = ModeledResponse<CategoryListModel>;
 
 public class CategoryList {
     static readonly SupabaseService SERVICE = new SupabaseService();
@@ -13,7 +13,7 @@ public class CategoryList {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
     
-            var result = await client!.From<Supabase.CategoryList>().Get();
+            var result = await client!.From<CategoryListModel>().Get();
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: The Category List data fetch failed!");
@@ -22,7 +22,7 @@ public class CategoryList {
     }
 
     // ReSharper disable once InconsistentNaming
-    public static Supabase.CategoryList getCategory(int categoryID) {
+    public static CategoryListModel getCategory(int categoryID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -40,7 +40,7 @@ public class CategoryList {
         }
     }
 
-    public static List<Supabase.CategoryList> viewCategories() {
+    public static List<CategoryListModel> viewCategories() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
