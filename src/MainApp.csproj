@@ -27,15 +27,11 @@
     <PackageReference Include="dotenv.net" Version="3.2.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
     <PackageReference Include="supabase" Version="1.1.1" />
-    <Compile Include="src/**/*.cs" />
+<!--    <Compile Include="src/**/*.cs" />-->
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include=".idea/**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="backend/MainWindow.axaml.cs">
+    <Compile Include="src/frontend/**">
       <DependentUpon>MainWindow.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

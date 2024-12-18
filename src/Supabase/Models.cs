@@ -10,7 +10,7 @@ public class CategoryList : BaseModel {
     [PrimaryKey("category_id")]
     public int CategoryID { get; init; }
     [Column("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }
 
 // Customer Information
@@ -19,13 +19,13 @@ public class CustomerInfo : BaseModel {
     [PrimaryKey("customer_id")]
     public int? CustomerID { get; init; }
     [Column("last_name")]
-    public string LastName { get; set; }
+    public string? LastName { get; set; }
     [Column("first_name")]
-    public string FirstName { get; set; }
+    public string? FirstName { get; set; }
     [Column("contact_phone")]
-    public string ContactPhone { get; set; }
+    public string? ContactPhone { get; set; }
     [Column("email")]
-    public string Email { get; set; }
+    public string? Email { get; set; }
 }
 
 // Rental Equipment
@@ -42,7 +42,7 @@ public class RentalEquipment : BaseModel {
     [Column("name")]
     public string? Name { get; set; }
     // Navigation property
-    public CategoryList Category { get; set; }
+    public CategoryList? Category { get; set; }
 }
 
 // Rental Information
@@ -62,8 +62,8 @@ public class RentalInfo : BaseModel {
     [Column("cost")]
     public decimal Cost { get; set; }
     // Navigation properties
-    public CustomerInfo Customer { get; set; }
-    public RentalEquipment Equipment { get; set; }
+    public CustomerInfo? Customer { get; set; }
+    public RentalEquipment? Equipment { get; set; }
 }
 
 // // For Insert/Update operations you might want these DTOs:

@@ -9,12 +9,13 @@ public class CustomerInfo {
     // private fields
     static readonly SupabaseService SERVICE = new SupabaseService();
     // public fields
-    // ReSharper disable once InconsistentNaming
+    // ReSharper disable all
     public int? CustomerID { get; set; }
-    public string LastName { get; set; }
-    public string FirstName { get; set; }
-    public string ContactPhone { get; set; }
-    public string Email { get; set; }
+    public string? LastName { get; set; }
+    public string? FirstName { get; set; }
+    public string? ContactPhone { get; set; }
+    public string? Email { get; set; }
+    // ReSharper restore all
 
     // ReSharper disable once MemberCanBePrivate.Global
     public static async Task<Response> fetch() {
