@@ -1,6 +1,6 @@
 using src.Supabase;
 using Supabase.Postgrest.Responses;
-namespace src.backend;
+namespace libraries.backend;
 
 using Response = ModeledResponse<RentalEquipmentModel>;
 
@@ -48,7 +48,7 @@ public class RentalEquipment {
                 Description = first.Description;
                 Name = first.Name;
             }
-            
+
             return first;
         } catch (Exception ex) {
             Console.WriteLine(
@@ -75,7 +75,7 @@ public class RentalEquipment {
     //             .Where(r => r.EquipmentID == EquipmentID)
     //             .Insert(recordModel);
     //         var models = result.Models;
-    //         
+    //
     //         // ReSharper disable once InvertIf
     //         if (models.Count!= 0) {
     //             var first = models.First(r => r.EquipmentID == EquipmentID);
@@ -84,7 +84,7 @@ public class RentalEquipment {
     //             Description = first.Description;
     //             Name = first.Name;
     //         }
-    //         
+    //
     //     } catch (Exception ex) { // ReSharper disable once AsyncVoidMethod
     //         Console.WriteLine("Error: The record update operation has failed!");
     //         throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
@@ -118,13 +118,13 @@ public class RentalEquipment {
     //         var query = client!.From<RentalEquipmentModel>()
     //             .Where(r => r.EquipmentID == equipmentID);
     //
-    //         if (name != null) 
+    //         if (name != null)
     //             query = query.Set(r => r.Name!, name);
-    //         if (description != null) 
+    //         if (description != null)
     //             query = query.Set(r => r.Description!, description);
-    //         if (dailyRate.HasValue) 
+    //         if (dailyRate.HasValue)
     //             query = query.Set(r => r.DailyRate, dailyRate.Value);
-    //         if (categoryId.HasValue) 
+    //         if (categoryId.HasValue)
     //             query = query.Set(r => r.CategoryID, categoryId.Value);
     //
     //         var result = await query.Update();
@@ -133,7 +133,7 @@ public class RentalEquipment {
     //         Console.WriteLine(
     //             $"Equipment with ID \"{equipmentID}\" " +
     //             "has been updated successfully.");
-    //         
+    //
     //         // ReSharper disable once InvertIf
     //         if (models.Count != 0) {
     //             var first = models.First(r => r.EquipmentID == equipmentID);

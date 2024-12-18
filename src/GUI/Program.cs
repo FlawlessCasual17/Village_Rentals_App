@@ -1,6 +1,6 @@
 ﻿using Avalonia;
-
-namespace src;
+using System;
+namespace GUI;
 
 class Program {
     // Initialization code. Don't use any Avalonia, third-party APIs or any

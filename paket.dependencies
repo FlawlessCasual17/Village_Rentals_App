@@ -4,13 +4,17 @@ source https://api.nuget.org/v3/index.json
 # paket will be used instead.
 storage: none
 
-group src
+group GUI
 storage: none
 source https://api.nuget.org/v3/index.json
-nuget Avalonia == 11.2.1
-nuget Avalonia.Desktop == 11.2.1
-nuget Avalonia.Fonts.Inter == 11.2.1
-nuget Avalonia.Themes.Fluent == 11.2.1
-nuget dotenv.net ~> 3.2.1
-nuget Newtonsoft.Json ~> 13.0.3
-nuget supabase ~> 1.1.1
+    nuget Avalonia == 11.2.1
+    nuget Avalonia.Desktop == 11.2.1
+    nuget Avalonia.Fonts.Inter == 11.2.1
+    nuget Avalonia.Themes.Fluent == 11.2.1
+
+group libraries
+storage: none
+source https://api.nuget.org/v3/index.json
+    nuget dotenv.net ~> 3.2.1
+    nuget Newtonsoft.Json ~> 13.0.3
+    nuget supabase ~> 1.1.1

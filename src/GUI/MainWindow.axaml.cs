@@ -1,10 +1,9 @@
 using Avalonia.Controls;
 
-namespace src;
+namespace GUI;
 
 public partial class MainWindow : Window {
     public MainWindow() {
         InitializeComponent();
-        // TestButton.Content = "Click Me!";
     }
 }

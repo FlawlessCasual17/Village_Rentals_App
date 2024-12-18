@@ -1,6 +1,6 @@
 using src.Supabase;
 using Supabase.Postgrest.Responses;
-namespace src.backend;
+namespace libraries.backend;
 
 using Response = ModeledResponse<CustomerInfoModel>;
 
@@ -32,7 +32,7 @@ public class CustomerInfo {
     }
 
     // ReSharper disable once InconsistentNaming
-    static bool verifyCustomer(int customerID) 
+    static bool verifyCustomer(int customerID)
         => Task.Run(fetch).GetAwaiter().GetResult()
             .Models.Any(c => c.CustomerID == customerID);
 
@@ -46,7 +46,7 @@ public class CustomerInfo {
 
             Console.WriteLine(
                 "Found a customer record associated with the associated customer id.");
-            
+
             return first;
         } catch (Exception ex) {
             Console.WriteLine(
@@ -71,7 +71,7 @@ public class CustomerInfo {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
 
-            var recordModel = new Supabase.CustomerInfo {
+            var recordModel = new CustomerInfoModel() {
                 CustomerID = null,
                 LastName = LastName,
                 FirstName = FirstName,
@@ -82,24 +82,24 @@ public class CustomerInfo {
             var result = await client!.From<CustomerInfoModel>().Insert(recordModel);
             var models = result.Models;
             var proof = verifyCustomer((int)CustomerID!);
-            
+
             // ReSharper disable once InvertIf
             if (proof) {
-                var first = models.First(c => 
+                var first = models.First(c =>
                     c.ContactPhone == ContactPhone &&
                     c.Email == Email);
                 CustomerID = first.CustomerID;
                 LastName = first.LastName;
                 FirstName = first.FirstName;
             }
-            
+
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: Failed to create a new customer record.");
             throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
         }
     }
-    
+
     // ReSharper disable once InconsistentNaming
     public async Task<Response> updateCustomerInfo(int? customerID = null) {
         try {
@@ -119,17 +119,17 @@ public class CustomerInfo {
                 .Update(recordModel);
             var models = result.Models;
             var proof = verifyCustomer((int)CustomerID!);
-            
+
             // ReSharper disable once InvertIf
             if (proof) {
-                var first = models.First(c => 
+                var first = models.First(c =>
                     c.ContactPhone == ContactPhone &&
                     c.Email == Email);
                 CustomerID = first.CustomerID;
                 LastName = first.LastName;
                 FirstName = first.FirstName;
             }
-            
+
             return result;
         } catch (Exception ex) {
             Console.WriteLine(

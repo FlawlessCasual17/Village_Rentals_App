@@ -1,6 +1,6 @@
 using src.Supabase;
 using Supabase.Postgrest.Responses;
-namespace src.backend;
+namespace libraries.backend;
 
 using Response = ModeledResponse<CategoryListModel>;
 
@@ -12,7 +12,7 @@ public class CategoryList {
         try {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
-    
+
             var result = await client!.From<CategoryListModel>().Get();
             return result;
         } catch (Exception ex) {

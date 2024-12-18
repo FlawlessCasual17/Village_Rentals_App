@@ -1,8 +1,0 @@
-group src
-Avalonia
-Avalonia.Desktop
-Avalonia.Themes.Fluent
-Avalonia.Fonts.Inter
-dotenv.net
-Newtonsoft.Json
-supabase

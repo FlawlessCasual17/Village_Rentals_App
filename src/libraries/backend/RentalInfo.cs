@@ -1,6 +1,6 @@
 using src.Supabase;
 using Supabase.Postgrest.Responses;
-namespace src.backend;
+namespace libraries.backend;
 
 using Response = ModeledResponse<RentalInfoModel>;
 
@@ -26,7 +26,7 @@ public class RentalInfo {
         try {
             await SERVICE.intializeService();
             var client = SERVICE.Client;
-    
+
             var result = await client!.From<RentalInfoModel>().Get();
             return result;
         } catch (Exception ex) {
@@ -84,11 +84,11 @@ public class RentalInfo {
             var models = result.Models;
 
             var proof = models.Any(r => r.RentalID == rentalID);
-            
+
             if (!proof) return false;
 
             Console.WriteLine("Found a rental info record with the associated rental id.");
-            
+
             return proof;
         } catch (Exception ex) {
             Console.WriteLine(
@@ -132,10 +132,10 @@ public class RentalInfo {
 
             var result = await client!.From<RentalInfoModel>().Insert(recordModel);
             var models = result.Models;
-            
+
             // ReSharper disable once InvertIf
             if (models.Count != 0) {
-                var first = models.First(r => 
+                var first = models.First(r =>
                     r.CustomerID == customerID &&
                     r.EquipmentID == equipmentID);
                 RentalID = first.RentalID;
@@ -145,7 +145,7 @@ public class RentalInfo {
                 CustomerID = first.CustomerID;
                 EquipmentID = first.EquipmentID;
             }
-            
+
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: The creation of a new rental record has failed!");
@@ -182,7 +182,7 @@ public class RentalInfo {
                 CustomerID = first.CustomerID;
                 EquipmentID = first.EquipmentID;
             }
-            
+
             return result;
         } catch (Exception ex) {
             Console.WriteLine(
@@ -207,21 +207,21 @@ public class RentalInfo {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
 
-            var proof = models.Any(r => 
-                r.EquipmentID == equipmentID && 
+            var proof = models.Any(r =>
+                r.EquipmentID == equipmentID &&
                 r.CustomerID == customerID);
-            
+
             if (!proof) return false;
 
             Console.WriteLine("""
-                Found an existing record associated with 
+                Found an existing record associated with
                 the specified equipment ID, and customer ID.
             """);
-            
+
             return proof;
         } catch (Exception ex) {
             Console.WriteLine("""
-                Couldn't find a record associated with 
+                Couldn't find a record associated with
                 the specified equipment ID, and customer ID.
             """);
             throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
