@@ -1,5 +1,5 @@
 using System.Reactive;
-using Libraries.Supabase;
+using Libraries.Data;
 using ReactiveUI;
 using CategoryList = Libraries.backend.CategoryList;
 namespace GUI.ViewModels;
@@ -25,12 +25,12 @@ public class CategoryListViewModel : ViewModelBase {
 
     Task loadCategories() {
         try {
-            var categoryList = new CategoryList();
+            var service = new DatabaseService();
+            var categoryList = new CategoryList(service);
             var viewCategories = categoryList.viewCategories();
             Categories = new ObservableCollection<CategoryListModel>(viewCategories);
-        } catch (SupabaseException ex) {
-            // Handle error appropriately
-            Console.WriteLine($"Failed to load categories: {ex.Message}");
+        } catch (Exception ex) {
+            throw new Exception("Failed to load categories", ex);
         }
 
         return Task.CompletedTask;

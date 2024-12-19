@@ -1,11 +1,11 @@
-using Libraries.Supabase;
-using Supabase.Postgrest.Responses;
+using Libraries.Data;
+using Microsoft.EntityFrameworkCore;
 namespace Libraries.backend;
 
-using Response = ModeledResponse<Supabase.RentalInfo>;
+using Response = List<RentalInfoModel>;
 
 // ReSharper disable once UnusedType.Global
-public class RentalInfo {
+public class RentalInfo(DatabaseService service) {
     // private fields
     readonly DateTime date = DateTime.Now;
     decimal DailyRate { get; set; }
@@ -23,31 +23,29 @@ public class RentalInfo {
     // ReSharper disable once MemberCanBePrivate.Global
     public async Task<Response> fetch() {
         try {
-            var service = new SupabaseService();
-
             await service.intialize();
-            var client = service.getClient();
+            var dbContext = service.getDbContext();
 
-            var result = await client!.From<Supabase.RentalInfo>().Get();
+            var result = await dbContext.RentalInfos.ToListAsync();
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: The Rental Info data fetch failed!");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception("Error: The Rental Info data fetch failed!", ex);
         }
     }
 
-    async Task<decimal> getDailyRate(int equipmentId) {
+    static async Task<decimal> getDailyRate(int equipmentId) {
         const string msg = "Error: The data fetching returned a null value!";
 
-        var equipment = new RentalEquipment();
+        var newService = new DatabaseService();
+        var equipment = new RentalEquipment(newService);
         var result = await equipment.fetch();
         if (result == null) throw new Exception(msg);
-        var models = result.Models;
 
         // First is the equivalent of Where.First() in LINQ.
         // Search through the models and retrieve the value of "daily_rate".
-        var linqResult = models.First(e => e.EquipmentID == equipmentId);
-        var newDailyRate = linqResult.DailyRate;
+        var first = result.First(e => e.EquipmentID == equipmentId);
+        var newDailyRate = first.DailyRate;
 
         return newDailyRate; // Return the new daily rate.
     }
@@ -82,10 +80,9 @@ public class RentalInfo {
     // ReSharper disable once InconsistentNaming
     public bool processReturn(int rentalID) {
         try {
-            var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
+            var result = Task.Run(() => fetch()).GetAwaiter().GetResult();
 
-            var proof = models.Any(r => r.RentalID == rentalID);
+            var proof = result.Any(r => r.RentalID == rentalID);
 
             if (!proof) return false;
 
@@ -93,38 +90,33 @@ public class RentalInfo {
 
             return proof;
         } catch (Exception ex) {
-            Console.WriteLine(
-                "Couldn't find a rental info record with the associated rental id.");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception(
+                "Couldn't find a rental info record with the associated rental id.", ex);
         }
     }
 
     // ReSharper disable InconsistentNaming
-    public Supabase.RentalInfo getRentalInfo(int rentalID) {
+    public Data.RentalInfo getRentalInfo(int rentalID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
 
-            var first = models.First(r => r.RentalID == rentalID);
+            var first = result.First(r => r.RentalID == rentalID);
 
             Console.WriteLine("Found a rental info record with the associated rental id.");
 
             return first;
         } catch (Exception ex) {
-            Console.WriteLine(
-                $"Couldn't find a rental info record with the associated rental id");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception(
+                "Couldn't find a rental info record with the associated rental id", ex);
         }
     }
 
     public async Task<Response> createRental(int equipmentID, int customerID) {
         try {
-            var service = new SupabaseService();
-
             await service.intialize();
-            var client = service.getClient();
+            var dbContext = service.getDbContext();
 
-            var recordModel = new Supabase.RentalInfo {
+            var recordModel = new RentalInfoModel {
                 RentalID = null!,
                 Date = date,
                 CustomerID = customerID,
@@ -134,13 +126,14 @@ public class RentalInfo {
                 Cost = TotalCost
             };
 
-            var result = await client!.From<Supabase.RentalInfo>()
-                .Insert(recordModel);
-            var models = result.Models;
+            await dbContext.RentalInfos.AddAsync(recordModel);
+            await dbContext.SaveChangesAsync();
+
+            var result = await dbContext.RentalInfos.ToListAsync();
 
             // ReSharper disable once InvertIf
-            if (models.Count != 0) {
-                var first = models.First(r =>
+            if (result.Count != 0) {
+                var first = result.First(r =>
                     r.CustomerID == customerID &&
                     r.EquipmentID == equipmentID);
                 RentalID = first.RentalID;
@@ -153,35 +146,35 @@ public class RentalInfo {
 
             return result;
         } catch (Exception ex) {
-            Console.WriteLine("Error: The creation of a new rental record has failed!");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception("Error: The creation of a new rental record has failed!", ex);
         }
     }
 
     public async Task<Response> updateRental(int rentalID, int equipmentID, int customerID) {
         try {
-            var service = new SupabaseService();
-
             await service.intialize();
-            var client = service.getClient();
+            var dbContext = service.getDbContext();
 
-            var recordModel = new Supabase.RentalInfo {
-                RentalID = rentalID,
-                CustomerID = customerID,
-                EquipmentID = equipmentID,
-                RentalDate = RentalDate,
-                ReturnDate = ReturnDate,
-                Cost = TotalCost
-            };
+            await dbContext.RentalInfos
+                .Where(r =>
+                    r.RentalID == RentalID &&
+                    r.EquipmentID == equipmentID &&
+                    r.CustomerID == CustomerID
+                ).ExecuteUpdateAsync(set => set
+                    .SetProperty(c => c.RentalID, rentalID)
+                    .SetProperty(c => c.EquipmentID, equipmentID)
+                    .SetProperty(c => c.CustomerID, customerID)
+                    .SetProperty(c => c.RentalDate, RentalDate)
+                    .SetProperty(c => c.ReturnDate, ReturnDate)
+                    .SetProperty(c => c.Cost, TotalCost)
+                );
+            await dbContext.SaveChangesAsync();
 
-            var result = await client!.From<Supabase.RentalInfo>()
-                .Where(r => r.RentalID == rentalID)
-                .Update(recordModel);
-            var models = result.Models;
+            var result = await dbContext.RentalInfos.ToListAsync();
 
             // ReSharper disable once InvertIf
-            if (models.Count != 0) {
-                var first = models.First(r => r.RentalID == rentalID);
+            if (result.Count != 0) {
+                var first = result.First(r => r.RentalID == rentalID);
                 RentalID = first.RentalID;
                 RentalDate = first.RentalDate;
                 ReturnDate = first.ReturnDate;
@@ -192,29 +185,25 @@ public class RentalInfo {
 
             return result;
         } catch (Exception ex) {
-            Console.WriteLine(
-                "Error: Failed to update the rental record with the associated rental ID.");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception(
+                "Error: Failed to update the rental record with the associated rental ID.", ex);
         }
     }
 
-    public List<Supabase.RentalInfo> viewAllRentalInfo() {
+    public Response viewAllRentalInfo() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
-            return models;
+            return result;
         } catch (Exception ex) {
-            Console.WriteLine("Error: Failed to fetch the rental information!");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception("Error: Failed to fetch the rental information!", ex);
         }
     }
 
     public bool processRental(int equipmentID, int customerID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
 
-            var proof = models.Any(r =>
+            var proof = result.Any(r =>
                 r.EquipmentID == equipmentID &&
                 r.CustomerID == customerID);
 
@@ -227,11 +216,10 @@ public class RentalInfo {
 
             return proof;
         } catch (Exception ex) {
-            Console.WriteLine("""
+            throw new Exception("""
                 Couldn't find a record associated with
                 the specified equipment ID, and customer ID.
-            """);
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            """, ex);
         }
     }
 }

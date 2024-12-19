@@ -1,56 +1,43 @@
-using Libraries.Supabase;
-using Supabase.Postgrest.Responses;
+using Libraries.Data;
+using Microsoft.EntityFrameworkCore;
 namespace Libraries.backend;
 
-using Response = ModeledResponse<Supabase.CategoryList>;
+using Response = List<Data.CategoryList>;
 
-public class CategoryList {
+public class CategoryList(DatabaseService service) {
     // ReSharper disable once MemberCanBePrivate.Global
     public async Task<Response> fetch() {
         try {
-            var service = new SupabaseService();
-
             await service.intialize();
-            var client = service.getClient();
-
-            var result = await client!.From<Supabase.CategoryList>().Get();
-
-            Console.WriteLine(result.Model);
-
+            var context = service.getDbContext();
+            var result = await context.Categories.ToListAsync();
             return result;
         } catch (Exception ex) {
-            Console.WriteLine("Error: The Category List data fetch failed!");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception("Error: The Category List data fetch failed!", ex);
         }
     }
 
     // ReSharper disable once InconsistentNaming
-    public Supabase.CategoryList getCategory(int categoryID) {
+    public CategoryListModel getCategory(int categoryID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
-
-            var first = models.First(c => c.CategoryID == categoryID);
-
-            Console.WriteLine(
-                "Found a category info record with the associated category id.");
-
-            return first;
+            var category = result.First(c => c.CategoryID == categoryID);
+            return category ?? throw new Exception("Category not found");
         } catch (Exception ex) {
-            Console.WriteLine(
-                $"Couldn't find a category record with the associated category id");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            const string msg =
+                "Couldn't find a category record with the associated category id";
+            throw new Exception(msg, ex);
         }
     }
 
-    public List<Supabase.CategoryList> viewCategories() {
+    public Response viewCategories() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
-            return models;
+            return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: Failed to fetch the category list information!");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception(
+                "Error: Failed to fetch the category list information!", ex);
         }
     }
 }

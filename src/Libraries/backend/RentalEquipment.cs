@@ -1,11 +1,11 @@
-using Libraries.Supabase;
-using Supabase.Postgrest.Responses;
+using Libraries.Data;
+using Microsoft.EntityFrameworkCore;
 namespace Libraries.backend;
 
-using Response = ModeledResponse<Supabase.RentalEquipment>;
+using Response = List<RentalEquipmentModel>;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public class RentalEquipment {
+public class RentalEquipment(DatabaseService service) {
     // public fields
     // ReSharper disable all
     public int EquipmentID { get; set; }
@@ -17,31 +17,27 @@ public class RentalEquipment {
 
     public async Task<Response> fetch() {
         try {
-            var service = new SupabaseService();
-
             await service.intialize();
-            var client = service.getClient();
+            var dbContext = service.getDbContext();
 
-            var result = await client!.From<Supabase.RentalEquipment>().Get();
+            var result = await dbContext.RentalEquipments.ToListAsync();
             return result;
         } catch (Exception ex) {
-            Console.WriteLine("Error: The Rental Equipment data fetch failed!");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception("Error: The Rental Equipment data fetch failed!", ex);
         }
     }
 
     // ReSharper disable once InconsistentNaming
-    public Supabase.RentalEquipment getEquipment(int equipmentID) {
+    public RentalEquipmentModel getEquipment(int equipmentID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
 
-            var first = models.First(r => r.EquipmentID == equipmentID);
+            var first = result.First(r => r.EquipmentID == equipmentID);
 
             Console.WriteLine("Found an equipment record with the associated equipment id.");
 
             // ReSharper disable once InvertIf
-            if (models.Count != 0) {
+            if (result.Count != 0) {
                 EquipmentID = first.EquipmentID;
                 CategoryID = first.CategoryID;
                 DailyRate = first.DailyRate;
@@ -51,9 +47,8 @@ public class RentalEquipment {
 
             return first;
         } catch (Exception ex) {
-            Console.WriteLine(
-                "Couldn't find an equipment record with the associated equipment id.");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception(
+                "Couldn't find an equipment record with the associated equipment id.", ex);
         }
     }
 
@@ -91,14 +86,12 @@ public class RentalEquipment {
     //     }
     // }
 
-    public List<Supabase.RentalEquipment> viewEquipmentInventory() {
+    public Response viewEquipmentInventory() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
-            return models;
+            return result;
         } catch (Exception ex) {
-            Console.WriteLine("Error: Couldn't fetch the equipment inventory.");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception("Error: Couldn't fetch the equipment inventory.", ex);
         }
     }
 

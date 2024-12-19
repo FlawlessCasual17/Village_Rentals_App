@@ -8,7 +8,6 @@ nuget DotNetEnv
 nuget Npgsql.EntityFrameworkCore.PostgreSQL
 nuget Microsoft.EntityFrameworkCore
 nuget Npgsql
-nuget supabase
 
 group GUI
 source https://api.nuget.org/v3/index.json

@@ -1,11 +1,11 @@
-using Libraries.Supabase;
-using Supabase.Postgrest.Responses;
+using Libraries.Data;
+using Microsoft.EntityFrameworkCore;
 namespace Libraries.backend;
 
-using Response = ModeledResponse<Supabase.CustomerInfo>;
+using Response = List<CustomerInfoModel>;
 
 // ReSharper disable once UnusedType.Global
-public class CustomerInfo {
+public class CustomerInfo(DatabaseService service) {
     // private fields
     // public fields
     // ReSharper disable all
@@ -19,51 +19,42 @@ public class CustomerInfo {
     // ReSharper disable once MemberCanBePrivate.Global
     public async Task<Response> fetch() {
         try {
-            var service = new SupabaseService();
-
             await service.intialize();
-            var client = service.getClient();
-
-            var result = await client.From<Supabase.CustomerInfo>().Get();
-
-            Console.WriteLine(result.Model);
-
+            var context = service.getDbContext();
+            var result = await context.Customers.ToListAsync();
             return result;
         } catch (Exception ex) {
-            Console.WriteLine("Error: The Customer Info data fetch failed!");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception("Error: The Customer Info data fetch failed!", ex);
         }
     }
 
     // ReSharper disable once InconsistentNaming
     bool verifyCustomer(int customerID)
         => Task.Run(fetch).GetAwaiter().GetResult()
-            .Models.Any(c => c.CustomerID == customerID);
+            .Any(c => c.CustomerID == customerID);
 
     // ReSharper disable once InconsistentNaming
-    public Supabase.CustomerInfo validateCustomer(int customerID) {
+    public CustomerInfoModel validateCustomer(int customerID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
 
-            var first = models.First(c => c.CustomerID == customerID);
+            var first = result.First(c => c.CustomerID == customerID);
 
             Console.WriteLine(
                 "Found a customer record associated with the associated customer id.");
 
             return first;
         } catch (Exception ex) {
-            Console.WriteLine(
-                $"Couldn't find a customer record with the associated customer id");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception(
+                "Couldn't find a customer record with the associated customer id",
+                ex);
         }
     }
 
-    public List<Supabase.CustomerInfo> viewCustomers() {
+    public Response viewCustomers() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
-            var models = result.Models;
-            return models;
+            return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: Couldn't fetch the customer list.");
             throw new Exception(ex.Message);
@@ -72,12 +63,10 @@ public class CustomerInfo {
 
     public async Task<Response> createCustomer() {
         try {
-            var service = new SupabaseService();
-
             await service.intialize();
-            var client = service.getClient();
+            var dbContext = service.getDbContext();
 
-            var recordModel = new Supabase.CustomerInfo() {
+            var recordModel = new CustomerInfoModel() {
                 CustomerID = null,
                 LastName = LastName,
                 FirstName = FirstName,
@@ -85,13 +74,19 @@ public class CustomerInfo {
                 Email = Email
             };
 
-            var result = await client!.From<Supabase.CustomerInfo>().Insert(recordModel);
-            var models = result.Models;
-            var proof = verifyCustomer((int)CustomerID!);
+            await dbContext.Customers.AddAsync(recordModel);
+            await dbContext.SaveChangesAsync();
+
+            var result = await dbContext.Customers.ToListAsync();
+            // ReSharper disable once InconsistentNaming
+            var customerID = result.First(c =>
+                c.ContactPhone == ContactPhone &&
+                c.Email == Email).CustomerID;
+            var proof = verifyCustomer((int)customerID!);
 
             // ReSharper disable once InvertIf
             if (proof) {
-                var first = models.First(c =>
+                var first = result.First(c =>
                     c.ContactPhone == ContactPhone &&
                     c.Email == Email);
                 CustomerID = first.CustomerID;
@@ -101,36 +96,33 @@ public class CustomerInfo {
 
             return result;
         } catch (Exception ex) {
-            Console.WriteLine("Error: Failed to create a new customer record.");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception("Failed to create a new customer record.", ex);
         }
     }
 
     // ReSharper disable once InconsistentNaming
     public async Task<Response> updateCustomerInfo(int? customerID = null) {
         try {
-            var service = new SupabaseService();
-
             await service.intialize();
-            var client = service.getClient();
+            var dbContext = service.getDbContext();
 
-            var recordModel = new Supabase.CustomerInfo {
-                CustomerID = customerID ?? CustomerID,
-                LastName = LastName,
-                FirstName = FirstName,
-                ContactPhone = ContactPhone,
-                Email = Email
-            };
+            await dbContext.Customers
+                .Where(c => c.CustomerID == customerID)
+                .ExecuteUpdateAsync(set => set
+                    .SetProperty(c => c.CustomerID, customerID ?? CustomerID)
+                    .SetProperty(c => c.LastName, LastName)
+                    .SetProperty(c => c.FirstName, FirstName)
+                    .SetProperty(c => c.ContactPhone, ContactPhone)
+                    .SetProperty(c => c.Email, Email)
+            );
+            await dbContext.SaveChangesAsync();
 
-            var result = await client!.From<Supabase.CustomerInfo>()
-                .Where(c => c.CustomerID == CustomerID)
-                .Update(recordModel);
-            var models = result.Models;
-            var proof = verifyCustomer((int)CustomerID!);
+            var result = await dbContext.Customers.ToListAsync();
+            var proof = verifyCustomer((int)customerID!);
 
             // ReSharper disable once InvertIf
             if (proof) {
-                var first = models.First(c =>
+                var first = result.First(c =>
                     c.ContactPhone == ContactPhone &&
                     c.Email == Email);
                 CustomerID = first.CustomerID;
@@ -140,31 +132,28 @@ public class CustomerInfo {
 
             return result;
         } catch (Exception ex) {
-            Console.WriteLine(
-                "Error: Failed to update a customer record based on the customer ID.");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception(
+                "Failed to update a customer record based on the customer ID.", ex);
         }
     }
 
     // ReSharper disable once InconsistentNaming
     public async Task deleteCustomerInfo(int customerID) {
         try {
-            var service = new SupabaseService();
-
             await service.intialize();
-            var client = service.getClient();
+            var dbContext = service.getDbContext();
 
-            await client!.From<Supabase.CustomerInfo>()
+            await dbContext.Customers
                 .Where(c => c.CustomerID == customerID)
-                .Delete();
+                .ExecuteDeleteAsync();
+            await dbContext.SaveChangesAsync();
 
             var proof = verifyCustomer(customerID);
             if (!proof)
                 Console.WriteLine("Customer record deleted successfully.");
         } catch (Exception ex) {
-            Console.WriteLine(
-                "Error: Failed to delete a customer record based on the customer ID.");
-            throw new SupabaseException(ex.Message, ex.HResult, $"{ex.StackTrace}");
+            throw new Exception(
+                "Error: Failed to delete a customer record based on the customer ID.", ex);
         }
     }
 }
