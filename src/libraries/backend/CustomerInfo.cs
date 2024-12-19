@@ -1,4 +1,4 @@
-using src.Supabase;
+using libraries.Supabase;
 using Supabase.Postgrest.Responses;
 namespace libraries.backend;
 
@@ -7,7 +7,6 @@ using Response = ModeledResponse<CustomerInfoModel>;
 // ReSharper disable once UnusedType.Global
 public class CustomerInfo {
     // private fields
-    static readonly SupabaseService SERVICE = new SupabaseService();
     // public fields
     // ReSharper disable all
     public int? CustomerID { get; set; }
@@ -18,12 +17,17 @@ public class CustomerInfo {
     // ReSharper restore all
 
     // ReSharper disable once MemberCanBePrivate.Global
-    public static async Task<Response> fetch() {
+    public async Task<Response> fetch() {
         try {
-            await SERVICE.intializeService();
-            var client = SERVICE.Client;
+            var service = new SupabaseService();
 
-            var result = await client!.From<CustomerInfoModel>().Get();
+            await service.intialize();
+            var client = service.getClient();
+
+            var result = await client.From<CustomerInfoModel>().Get();
+
+            Console.WriteLine(result.Model);
+
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: The Customer Info data fetch failed!");
@@ -32,12 +36,12 @@ public class CustomerInfo {
     }
 
     // ReSharper disable once InconsistentNaming
-    static bool verifyCustomer(int customerID)
+    bool verifyCustomer(int customerID)
         => Task.Run(fetch).GetAwaiter().GetResult()
             .Models.Any(c => c.CustomerID == customerID);
 
     // ReSharper disable once InconsistentNaming
-    public static CustomerInfoModel validateCustomer(int customerID) {
+    public CustomerInfoModel validateCustomer(int customerID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -55,7 +59,7 @@ public class CustomerInfo {
         }
     }
 
-    public static List<CustomerInfoModel> viewCustomers() {
+    public List<CustomerInfoModel> viewCustomers() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -68,8 +72,10 @@ public class CustomerInfo {
 
     public async Task<Response> createCustomer() {
         try {
-            await SERVICE.intializeService();
-            var client = SERVICE.Client;
+            var service = new SupabaseService();
+
+            await service.intialize();
+            var client = service.getClient();
 
             var recordModel = new CustomerInfoModel() {
                 CustomerID = null,
@@ -103,8 +109,10 @@ public class CustomerInfo {
     // ReSharper disable once InconsistentNaming
     public async Task<Response> updateCustomerInfo(int? customerID = null) {
         try {
-            await SERVICE.intializeService();
-            var client = SERVICE.Client;
+            var service = new SupabaseService();
+
+            await service.intialize();
+            var client = service.getClient();
 
             var recordModel = new CustomerInfoModel {
                 CustomerID = customerID ?? CustomerID,
@@ -141,8 +149,10 @@ public class CustomerInfo {
     // ReSharper disable once InconsistentNaming
     public async Task deleteCustomerInfo(int customerID) {
         try {
-            await SERVICE.intializeService();
-            var client = SERVICE.Client;
+            var service = new SupabaseService();
+
+            await service.intialize();
+            var client = service.getClient();
 
             await client!.From<CustomerInfoModel>()
                 .Where(c => c.CustomerID == customerID)

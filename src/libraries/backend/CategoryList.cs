@@ -1,17 +1,17 @@
-using src.Supabase;
+using libraries.Supabase;
 using Supabase.Postgrest.Responses;
 namespace libraries.backend;
 
 using Response = ModeledResponse<CategoryListModel>;
 
 public class CategoryList {
-    static readonly SupabaseService SERVICE = new SupabaseService();
-
     // ReSharper disable once MemberCanBePrivate.Global
-    public static async Task<Response> fetch() {
+    public async Task<Response> fetch() {
         try {
-            await SERVICE.intializeService();
-            var client = SERVICE.Client;
+            var service = new SupabaseService();
+
+            await service.intialize();
+            var client = service.getClient();
 
             var result = await client!.From<CategoryListModel>().Get();
             return result;
@@ -22,7 +22,7 @@ public class CategoryList {
     }
 
     // ReSharper disable once InconsistentNaming
-    public static CategoryListModel getCategory(int categoryID) {
+    public CategoryListModel getCategory(int categoryID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -40,7 +40,7 @@ public class CategoryList {
         }
     }
 
-    public static List<CategoryListModel> viewCategories() {
+    public List<CategoryListModel> viewCategories() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;

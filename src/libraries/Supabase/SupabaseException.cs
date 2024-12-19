@@ -1,8 +1,8 @@
-namespace src.Supabase;
+namespace libraries.Supabase;
 
 public class SupabaseException(
-    string message, 
-    int errorCode = 0, 
+    string message,
+    int errorCode = 0,
     string errorDetails = ""
 ) : Exception(message) {
     public int ErrorCode { get; init; } = errorCode;
@@ -10,22 +10,22 @@ public class SupabaseException(
 }
 
 // public class SupabaseFetchException(
-//     string message, 
-//     int errorCode = 0, 
+//     string message,
+//     int errorCode = 0,
 //     string errorDetails = ""
 //     ) : SupabaseException(
 //         $"Supabase Fetch Error: {message}", errorCode, errorDetails);
 //
 // public class SupabaseDatabaseException(
-//     string message, 
-//     int errorCode = 0, 
+//     string message,
+//     int errorCode = 0,
 //     string errorDetails = ""
 //     ) : SupabaseException(
 //         $"Supabase Database Error: {message}", errorCode, errorDetails);
 //
 // public class SupabaseAuthException(
-//     string message, 
-//     int errorCode = 0, 
+//     string message,
+//     int errorCode = 0,
 //     string errorDetails = ""
 //     ) : SupabaseException(
 //         $"Supabase Authentication Error: {message}", errorCode, errorDetails);

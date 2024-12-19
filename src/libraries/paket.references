@@ -1,4 +1,4 @@
 group libraries
-dotenv.net
 Newtonsoft.Json
 supabase
+DotNetEnv

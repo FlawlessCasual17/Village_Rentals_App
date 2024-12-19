@@ -9,6 +9,7 @@ public partial class MainWindow : Window {
         InitializeComponent();
         // Add more code here later on...
         AvaloniaXamlLoader.Load(this);
+
 #if DEBUG
     this.AttachDevTools();
 #endif

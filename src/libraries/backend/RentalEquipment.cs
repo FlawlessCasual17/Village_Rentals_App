@@ -1,4 +1,4 @@
-using src.Supabase;
+using libraries.Supabase;
 using Supabase.Postgrest.Responses;
 namespace libraries.backend;
 
@@ -6,21 +6,21 @@ using Response = ModeledResponse<RentalEquipmentModel>;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class RentalEquipment {
-    // private fields
-    static readonly SupabaseService SERVICE = new SupabaseService();
     // public fields
-    // ReSharper disable InconsistentNaming
+    // ReSharper disable all
     public int EquipmentID { get; set; }
     public int CategoryID { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     public decimal DailyRate { get; set; }
-    // ReSharper restore InconsistentNaming
+    // ReSharper restore all
 
-    public static async Task<Response> fetch() {
+    public async Task<Response> fetch() {
         try {
-            await SERVICE.intializeService();
-            var client = SERVICE.Client;
+            var service = new SupabaseService();
+
+            await service.intialize();
+            var client = service.getClient();
 
             var result = await client!.From<RentalEquipmentModel>().Get();
             return result;
@@ -91,7 +91,7 @@ public class RentalEquipment {
     //     }
     // }
 
-    public static List<RentalEquipmentModel> viewEquipmentInventory() {
+    public List<RentalEquipmentModel> viewEquipmentInventory() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;

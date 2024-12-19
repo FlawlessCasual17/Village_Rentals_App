@@ -1,13 +1,16 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-
+using GUI.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 namespace GUI;
 
 // ReSharper disable once PartialTypeWithSinglePart
 public partial class App : Application {
-    public override void Initialize() =>
-        AvaloniaXamlLoader.Load(this);
+    static readonly IServiceCollection SERVICES = new ServiceCollection();
+
+    public override void Initialize()
+        => AvaloniaXamlLoader.Load(this);
 
     public override void OnFrameworkInitializationCompleted() {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -15,4 +18,7 @@ public partial class App : Application {
 
         base.OnFrameworkInitializationCompleted();
     }
+
+    public override void RegisterServices()
+        => SERVICES.AddSingleton<CategoryListViewModel>();
 }

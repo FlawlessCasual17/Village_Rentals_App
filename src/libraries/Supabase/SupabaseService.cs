@@ -1,29 +1,31 @@
-using dotenv.net;
+using System.Text;
+using DotNetEnv;
 using Supabase;
-using static dotenv.net.Utilities.EnvReader;
 using SupabaseClient = Supabase.Client;
 
-namespace src.Supabase;
+namespace libraries.Supabase;
 
 public class SupabaseService {
-    public SupabaseClient? Client { get; private set; }
+    SupabaseClient? client;
 
-    public async Task intializeService() {
+    public async  Task intialize() {
         try {
-            DotEnv.Load();
+            Env.TraversePath().Load();
 
             var options = new SupabaseOptions {
                 AutoRefreshToken = true,
                 AutoConnectRealtime = true
             };
 
-            var url = GetStringValue("SUPABASE_URL");
-            var key = GetStringValue("SUPABASE_ANON_KEY");
+            const string msg = "Failed to get the environmental value!";
+            var url = Env.GetString("SUPABASE_URL", msg);
+            var key = Env.GetString("SUPABASE_KEY", msg);
 
-            var client = new SupabaseClient(url, key, options);
-            await client.InitializeAsync();
+            var newClient = new SupabaseClient(url, key, options)
+                    ?? throw new NullReferenceException();
+            await newClient.InitializeAsync();
 
-            Client = client;
+            client = newClient;
         } catch (Exception ex) {
             throw new SupabaseException(
                 "ERROR: Client initialization has failed!",
@@ -38,4 +40,7 @@ public class SupabaseService {
                 """);
         }
     }
+
+    public SupabaseClient getClient()
+        => client ?? throw new InvalidOperationException();
 }

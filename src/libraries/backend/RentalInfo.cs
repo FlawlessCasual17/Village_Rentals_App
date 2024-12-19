@@ -1,4 +1,4 @@
-using src.Supabase;
+using libraries.Supabase;
 using Supabase.Postgrest.Responses;
 namespace libraries.backend;
 
@@ -7,11 +7,10 @@ using Response = ModeledResponse<RentalInfoModel>;
 // ReSharper disable once UnusedType.Global
 public class RentalInfo {
     // private fields
-    static readonly SupabaseService SERVICE = new SupabaseService();
     readonly DateTime date = DateTime.Now;
     decimal DailyRate { get; set; }
     decimal TotalCost { get; set; }
-    // ReSharper disable InconsistentNaming
+    // ReSharper disable all
     // public fields
     public int? RentalID { get; set; }
     public int EquipmentID { get; set; }
@@ -19,13 +18,15 @@ public class RentalInfo {
     public DateTime ReturnDate { get; set; }
     public DateTime RentalDate { get; set; }
     public decimal Cost { get; set; }
-    // ReSharper restore InconsistentNaming
+    // ReSharper restore all
 
     // ReSharper disable once MemberCanBePrivate.Global
-    public static async Task<Response> fetch() {
+    public async Task<Response> fetch() {
         try {
-            await SERVICE.intializeService();
-            var client = SERVICE.Client;
+            var service = new SupabaseService();
+
+            await service.intialize();
+            var client = service.getClient();
 
             var result = await client!.From<RentalInfoModel>().Get();
             return result;
@@ -35,10 +36,11 @@ public class RentalInfo {
         }
     }
 
-    static async Task<decimal> getDailyRate(int equipmentId) {
+    async Task<decimal> getDailyRate(int equipmentId) {
         const string msg = "Error: The data fetching returned a null value!";
 
-        var result = await RentalEquipment.fetch();
+        var equipment = new RentalEquipment();
+        var result = await equipment.fetch();
         if (result == null) throw new Exception(msg);
         var models = result.Models;
 
@@ -78,7 +80,7 @@ public class RentalInfo {
     }
 
     // ReSharper disable once InconsistentNaming
-    public static bool processReturn(int rentalID) {
+    public bool processReturn(int rentalID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -98,7 +100,7 @@ public class RentalInfo {
     }
 
     // ReSharper disable InconsistentNaming
-    public static RentalInfoModel getRentalInfo(int rentalID) {
+    public RentalInfoModel getRentalInfo(int rentalID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -117,8 +119,10 @@ public class RentalInfo {
 
     public async Task<Response> createRental(int equipmentID, int customerID) {
         try {
-            await SERVICE.intializeService();
-            var client = SERVICE.Client;
+            var service = new SupabaseService();
+
+            await service.intialize();
+            var client = service.getClient();
 
             var recordModel = new RentalInfoModel {
                 RentalID = null!,
@@ -130,7 +134,8 @@ public class RentalInfo {
                 Cost = TotalCost
             };
 
-            var result = await client!.From<RentalInfoModel>().Insert(recordModel);
+            var result = await client!.From<RentalInfoModel>()
+                .Insert(recordModel);
             var models = result.Models;
 
             // ReSharper disable once InvertIf
@@ -155,8 +160,10 @@ public class RentalInfo {
 
     public async Task<Response> updateRental(int rentalID, int equipmentID, int customerID) {
         try {
-            await SERVICE.intializeService();
-            var client = SERVICE.Client;
+            var service = new SupabaseService();
+
+            await service.intialize();
+            var client = service.getClient();
 
             var recordModel = new RentalInfoModel {
                 RentalID = rentalID,
@@ -191,7 +198,7 @@ public class RentalInfo {
         }
     }
 
-    public static List<RentalInfoModel> viewAllRentalInfo() {
+    public List<RentalInfoModel> viewAllRentalInfo() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -202,7 +209,7 @@ public class RentalInfo {
         }
     }
 
-    public static bool processRental(int equipmentID, int customerID) {
+    public bool processRental(int equipmentID, int customerID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;

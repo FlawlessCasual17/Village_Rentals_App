@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:GUI.ViewModels"
+             x:Class="GUI.Layouts.CategoryListView"
+             x:DataType="vm:CategoryListViewModel">
+
+    <Design.DataContext>
+        <vm:CategoryListViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,Auto,*" Margin="20">
+        <TextBlock Grid.Row="0"
+                   Text="Categories"
+                   FontSize="24"
+                   Margin="10"/>
+
+        <!-- Display as a List -->
+        <!-- <ListBox Grid.Row="1" -->
+        <!--             ItemsSource="{Binding Categories}"> -->
+        <!--     <ListBox.ItemTemplate> -->
+        <!--         <DataTemplate> -->
+        <!--             <StackPanel> -->
+        <!--                 <TextBlock Text="{Binding Name}"/> -->
+        <!--                 ~1~ Add other properties you want to display @1@ -->
+        <!--             </StackPanel> -->
+        <!--         </DataTemplate> -->
+        <!--     </ListBox.ItemTemplate> -->
+        <!-- </ListBox> -->
+
+        <!-- Or display as a DataGrid -->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Categories}"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID"
+                                    Binding="{Binding CategoryID}"/>
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding Name}"/>
+                <!-- Add other columns as needed -->
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
