@@ -17,12 +17,13 @@ public class SupabaseService {
                 AutoConnectRealtime = true
             };
 
-            const string msg = "Failed to get the environmental value!";
-            var url = Env.GetString("SUPABASE_URL", msg);
-            var key = Env.GetString("SUPABASE_KEY", msg);
+            // var connection = new npgSq
 
-            var newClient = new SupabaseClient(url, key, options)
-                    ?? throw new NullReferenceException();
+            const string msg = "Failed to get the environmental value!";
+            var supabaseUrl = Env.GetString("SUPABASE_URL", msg);
+            var supabaseKey = Env.GetString("SUPABASE_KEY", msg);
+
+            var newClient = new SupabaseClient(supabaseUrl, supabaseKey, options);
             await newClient.InitializeAsync();
 
             client = newClient;

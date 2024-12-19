@@ -14,6 +14,9 @@ public class CategoryList {
             var client = service.getClient();
 
             var result = await client!.From<CategoryListModel>().Get();
+
+            Console.WriteLine(result.Model);
+
             return result;
         } catch (Exception ex) {
             Console.WriteLine("Error: The Category List data fetch failed!");

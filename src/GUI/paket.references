@@ -1,6 +1,0 @@
-group GUI
-Avalonia
-Avalonia.Desktop
-Avalonia.Themes.Fluent
-Avalonia.Fonts.Inter
-Avalonia.ReactiveUI
