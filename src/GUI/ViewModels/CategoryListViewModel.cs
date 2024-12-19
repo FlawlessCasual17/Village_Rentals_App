@@ -1,7 +1,7 @@
 using System.Reactive;
-using libraries.Supabase;
+using Libraries.Supabase;
 using ReactiveUI;
-using CategoryList = libraries.backend.CategoryList;
+using CategoryList = Libraries.backend.CategoryList;
 namespace GUI.ViewModels;
 
 public class CategoryListViewModel : ViewModelBase {

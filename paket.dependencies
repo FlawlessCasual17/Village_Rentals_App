@@ -1,18 +1,20 @@
 source https://api.nuget.org/v3/index.json
 
-storage: none
+storage: symlinks
 
 group Libraries
-    source https://api.nuget.org/v3/index.json
-    nuget DotNetEnv
-    nuget Npgsql.EntityFrameworkCore.PostgreSQL
-    nuget Npgsql
-    nuget supabase
+source https://api.nuget.org/v3/index.json
+nuget DotNetEnv
+nuget Npgsql.EntityFrameworkCore.PostgreSQL
+nuget Microsoft.EntityFrameworkCore
+nuget Npgsql
+nuget supabase
 
 group GUI
-    source https://api.nuget.org/v3/index.json
-    nuget Avalonia
-    nuget Avalonia.Desktop
-    nuget Avalonia.Fonts.Inter
-    nuget Avalonia.ReactiveUI
-    nuget Avalonia.Themes.Fluent
+source https://api.nuget.org/v3/index.json
+nuget Avalonia
+nuget Avalonia.Desktop
+nuget Avalonia.Fonts.Inter
+nuget Avalonia.ReactiveUI
+nuget Avalonia.Themes.Fluent
+nuget Microsoft.EntityFrameworkCore

@@ -1,8 +1,8 @@
-using libraries.Supabase;
+using Libraries.Supabase;
 using Supabase.Postgrest.Responses;
-namespace libraries.backend;
+namespace Libraries.backend;
 
-using Response = ModeledResponse<CategoryListModel>;
+using Response = ModeledResponse<Supabase.CategoryList>;
 
 public class CategoryList {
     // ReSharper disable once MemberCanBePrivate.Global
@@ -13,7 +13,7 @@ public class CategoryList {
             await service.intialize();
             var client = service.getClient();
 
-            var result = await client!.From<CategoryListModel>().Get();
+            var result = await client!.From<Supabase.CategoryList>().Get();
 
             Console.WriteLine(result.Model);
 
@@ -25,7 +25,7 @@ public class CategoryList {
     }
 
     // ReSharper disable once InconsistentNaming
-    public CategoryListModel getCategory(int categoryID) {
+    public Supabase.CategoryList getCategory(int categoryID) {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;
@@ -43,7 +43,7 @@ public class CategoryList {
         }
     }
 
-    public List<CategoryListModel> viewCategories() {
+    public List<Supabase.CategoryList> viewCategories() {
         try {
             var result = Task.Run(fetch).GetAwaiter().GetResult();
             var models = result.Models;

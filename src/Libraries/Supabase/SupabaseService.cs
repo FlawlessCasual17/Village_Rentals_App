@@ -1,9 +1,8 @@
-using System.Text;
 using DotNetEnv;
 using Supabase;
 using SupabaseClient = Supabase.Client;
 
-namespace libraries.Supabase;
+namespace Libraries.Supabase;
 
 public class SupabaseService {
     SupabaseClient? client;
@@ -35,9 +34,9 @@ public class SupabaseService {
                 Original Error Message: {ex.Message}
                 Source: {ex.Source}
                 Error-causing Method: {ex.TargetSite}
-                Exception Instance: {ex.InnerException}
                 Data: {ex.Data}
                 Stacktrace: {ex.StackTrace}
+                Exception Instance: {ex.InnerException}
                 """);
         }
     }

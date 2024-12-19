@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0CE974A3-537
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "src\GUI\GUI.csproj", "{75E3C8D8-DD57-478F-A527-70A77B5A5C69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libraries", "src\libraries\libraries.csproj", "{6F6B3794-BC6F-4DD0-8D96-3C6DA027520C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libraries", "src\Libraries\Libraries.csproj", "{6F6B3794-BC6F-4DD0-8D96-3C6DA027520C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,7 @@
+group GUI
+Microsoft.EntityFrameworkCore
+Avalonia
+Avalonia.Desktop
+Avalonia.Fonts.Inter
+Avalonia.ReactiveUI
+Avalonia.Themes.Fluent

@@ -1,4 +1,4 @@
-namespace libraries.Supabase;
+namespace Libraries.Supabase;
 
 public class SupabaseException(
     string message,

@@ -1,0 +1,6 @@
+group Libraries
+supabase
+DotNetEnv
+Npgsql
+Npgsql.EntityFrameworkCore.PostgreSQL
+Microsoft.EntityFrameworkCore
