@@ -4,23 +4,23 @@ GROUP GUI
 STORAGE: NONE
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    Avalonia (11.2.1)
+    Avalonia (11.2.2)
       Avalonia.BuildServices (>= 0.0.29) - restriction: >= netstandard2.0
-      Avalonia.Remote.Protocol (>= 11.2.1) - restriction: >= netstandard2.0
+      Avalonia.Remote.Protocol (>= 11.2.2) - restriction: >= netstandard2.0
       MicroCom.Runtime (>= 0.11) - restriction: >= netstandard2.0
       Microsoft.Bcl.AsyncInterfaces (>= 6.0) - restriction: && (< net6.0) (>= netstandard2.0)
       System.ComponentModel.Annotations (>= 4.5) - restriction: && (< net6.0) (>= netstandard2.0)
       System.Memory (>= 4.5.3) - restriction: && (< net6.0) (>= netstandard2.0)
     Avalonia.Angle.Windows.Natives (2.1.22087.20231008) - restriction: >= netstandard2.0
     Avalonia.BuildServices (0.0.31) - restriction: >= netstandard2.0
-    Avalonia.Desktop (11.2.1)
-      Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
-      Avalonia.Native (>= 11.2.1) - restriction: >= netstandard2.0
-      Avalonia.Skia (>= 11.2.1) - restriction: >= netstandard2.0
-      Avalonia.Win32 (>= 11.2.1) - restriction: >= netstandard2.0
-      Avalonia.X11 (>= 11.2.1) - restriction: >= netstandard2.0
-    Avalonia.Fonts.Inter (11.2.1)
-      Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
+    Avalonia.Desktop (11.2.2)
+      Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
+      Avalonia.Native (>= 11.2.2) - restriction: >= netstandard2.0
+      Avalonia.Skia (>= 11.2.2) - restriction: >= netstandard2.0
+      Avalonia.Win32 (>= 11.2.2) - restriction: >= netstandard2.0
+      Avalonia.X11 (>= 11.2.2) - restriction: >= netstandard2.0
+    Avalonia.Fonts.Inter (11.2.2)
+      Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
     Avalonia.FreeDesktop (11.2.2) - restriction: >= netstandard2.0
       Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
       Tmds.DBus.Protocol (>= 0.20) - restriction: >= netstandard2.0
@@ -35,8 +35,8 @@ NUGET
       SkiaSharp (>= 2.88.9) - restriction: >= netstandard2.0
       SkiaSharp.NativeAssets.Linux (>= 2.88.9) - restriction: >= netstandard2.0
       SkiaSharp.NativeAssets.WebAssembly (>= 2.88.9) - restriction: >= netstandard2.0
-    Avalonia.Themes.Fluent (11.2.1)
-      Avalonia (>= 11.2.1) - restriction: >= netstandard2.0
+    Avalonia.Themes.Fluent (11.2.2)
+      Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
     Avalonia.Win32 (11.2.2) - restriction: >= netstandard2.0
       Avalonia (>= 11.2.2) - restriction: >= netstandard2.0
       Avalonia.Angle.Windows.Natives (>= 2.1.22045.20230930) - restriction: >= netstandard2.0
